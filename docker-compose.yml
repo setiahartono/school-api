@@ -1,0 +1,20 @@
+version: '3.6'
+
+services:
+  redis-cache:
+    image: redis
+  web:
+    build: .
+    image: school
+    command: python manage.py runserver 0.0.0.0:8000 --settings=core.settings_docker
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis-cache
+  migration:
+    image: school
+    command: python manage.py migrate
+    volumes:
+      - .:/code
