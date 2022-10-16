@@ -1,4 +1,8 @@
 django==3.2
+django-model-utils
+drf-nested-routers
+django-environ
+django-redis
 djangorestframework
 ipython
 pdbpp

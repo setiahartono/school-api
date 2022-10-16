@@ -1,9 +1,38 @@
 from rest_framework import serializers
 
-from api.models import School
+from api.models import School, Student
 
 
 class SchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = School
-        fields = ('name', 'capacity', 'address', 'phone_number')
+        fields = (
+            'id',
+            'name',
+            'capacity',
+            'address',
+            'phone_number'
+        )
+        read_only_fields = ['id']
+
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = (
+            'id',
+            'first_name',
+            'last_name',
+            'school',
+            'identification',
+        )
+        read_only_fields = ['id', 'identification']
+    
+    def validate(self, data):
+        school = data['school']
+
+        enrolled_student_count = Student.objects.filter(school=school).count()
+        if enrolled_student_count + 1 > school.capacity:
+            raise serializers.ValidationError("Can't register student - School reached full capacity")
+        return data
