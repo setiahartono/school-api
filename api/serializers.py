@@ -14,7 +14,11 @@ class SchoolSerializer(serializers.ModelSerializer):
             'phone_number'
         )
         read_only_fields = ['id']
-
+    
+    def validate_capacity(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Capacity must be greater than zero")
+        return value
 
 
 class StudentSerializer(serializers.ModelSerializer):
