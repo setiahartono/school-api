@@ -115,6 +115,13 @@ class SchoolViewTestCase(BaseViewTestCase):
                 "capacity": 0,
                 "address": "47th Fire Red Street",
                 "phone_number": "6282828288",
+            },
+            # Very long school name
+            {
+                "name": "Verylongschoolnamethatexceedsmaximumcharacterlimit",
+                "capacity": 0,
+                "address": "47th Fire Red Street",
+                "phone_number": "6282828288",
             }
         ]
 
@@ -155,6 +162,13 @@ class SchoolViewTestCase(BaseViewTestCase):
             # Invalid capacity (zero value)
             {
                 "name": "Red High School",
+                "capacity": 0,
+                "address": "47th Fire Red Street",
+                "phone_number": "6282828288",
+            },
+            # Very long school name
+            {
+                "name": "Verylongschoolnamethatexceedsmaximumcharacterlimit",
                 "capacity": 0,
                 "address": "47th Fire Red Street",
                 "phone_number": "6282828288",
@@ -222,6 +236,12 @@ class StudentViewTestCase(BaseViewTestCase):
                 "first_name": "Mark",
                 "last_name": "White",
                 "school": self.limited_capacity_school.id
+            },
+            # Very long first name
+            {
+                "first_name": "Verylongschoolnamethatexceedsmaximumcharacterlimit",
+                "last_name": "last_name",
+                "school": self.normal_school.id
             }
         ]
 

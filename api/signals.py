@@ -8,9 +8,12 @@ def track_to_changelog(instance, kwargs):
     changes_summary = []
     final_summary = ""
     class_name = instance.__class__.__name__
+
     if kwargs['created']:
+        # If created, record it
         changes_summary.append(f"CREATED: {class_name} {instance}")
     else:
+        # Give a brief summary of changes, for each changed field
         for field, value in instance.changed_data.items():
             if final_summary == "":
                 final_summary = "CHANGED: "
@@ -38,16 +41,19 @@ def track_changelog_delete(instance):
 @receiver(pre_save, sender=School)
 @receiver(pre_save, sender=Student)
 def pre_save_signal(sender, instance, **kwargs):
+    # Track changes before save
     instance.changed_data = instance.tracker.changed()
 
 
 @receiver(post_save, sender=School)
 @receiver(post_save, sender=Student)
 def post_save_signal(sender, instance, **kwargs):
+    # Create changelog after saving
     track_to_changelog(instance, kwargs)
 
 
 @receiver(post_delete, sender=School)
 @receiver(post_delete, sender=Student)
 def post_delete_signal(sender, instance, **kwargs):
+    # Post delete signal
     track_changelog_delete(instance)
