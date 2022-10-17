@@ -1,6 +1,12 @@
 version: '3.6'
 
 services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
   redis-cache:
     image: redis
   web:
@@ -13,8 +19,22 @@ services:
       - "8000:8000"
     depends_on:
       - redis-cache
-  migration:
+      - migration
+  delay:
     image: school
-    command: python manage.py migrate
+    command: bash -c "sleep 3"
     volumes:
       - .:/code
+    depends_on:
+      - db
+  migration:
+    image: school
+    command: python manage.py migrate --settings=core.settings_docker --noinput
+    volumes:
+      - .:/code
+    depends_on:
+      - delay
+
+
+volumes:
+  postgres_data:
