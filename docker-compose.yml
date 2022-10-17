@@ -35,6 +35,5 @@ services:
     depends_on:
       - delay
 
-
 volumes:
   postgres_data:

@@ -3,16 +3,23 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
+[packages]
+django = "3.2"
+django-rest-framework = "*"
+djangorestframework = "*"
+django-model-utils = "*"
+drf-nested-routers = "*"
+django-environ = "*"
+django-redis = "*"
+psycopg2-binary = "==2.9.3"
+
 [dev-packages]
 ipython = "*"
 pdbpp = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-django = "*"
-
-[packages]
-django = "3.2"
-django-rest-framework = "*"
+model_bakery = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
