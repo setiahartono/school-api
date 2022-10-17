@@ -1,20 +1,30 @@
+import os
+
+import environ
+
 from core.settings import *
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+ALLOWED_HOSTS = [env('HOST')]
 
 USE_CACHE = True
 
-SECRET_KEY = 'django-insecure-&s$0xki157_)(sv-d61sp(#6y*7g%9nord4f2mi$nuhux2x&m4'
+# False if not in os.environ because of casting above
+DEBUG = env('DEBUG')
 
-CACHES['default']['LOCATION'] = "redis://redis-cache:6379/"
+# Raises Django's ImproperlyConfigured
+# exception if SECRET_KEY not in os.environ
+SECRET_KEY = env('SECRET_KEY')
+
+CACHES = {
+    'default': env.cache_url('REDIS_URL')
+}
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",  # set in docker-compose.yml
-        "PORT": 5432,  # default postgres port
-    }
+    "default": env.db()
 }
