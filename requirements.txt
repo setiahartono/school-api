@@ -5,6 +5,7 @@ django-environ
 django-redis
 djangorestframework
 ipython
+model_bakery
 pdbpp
 pytest
 pytest-cov
